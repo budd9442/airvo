@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:iot_ui_challenge/widgets/transparent_card.dart';
 
-class TempWidget extends StatelessWidget {
+class SpeedWidget extends StatelessWidget {
   final double temp;
   final Function(double) changeTemp;
 
-  const TempWidget({Key? key, required this.temp, required this.changeTemp})
+  const SpeedWidget({Key? key, required this.temp, required this.changeTemp})
       : super(key: key);
 
   @override
@@ -36,8 +36,8 @@ class TempWidget extends StatelessWidget {
                 ),
                 Expanded(
                   child: Slider(
-                      min: 16,
-                      max: 30,
+                      min: 15,
+                      max: 255,
                       value: temp,
                       activeColor: Colors.white,
                       inactiveColor: Colors.white30,
