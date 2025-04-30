@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:iot_ui_challenge/widgets/transparent_card.dart';
 
 class SpeedWidget extends StatelessWidget {
-  final double temp;
-  final Function(double) changeTemp;
+  final double speed;
+  final Function(double) changeSpeed;
 
-  const SpeedWidget({Key? key, required this.temp, required this.changeTemp})
+  const SpeedWidget({Key? key, required this.speed, required this.changeSpeed})
       : super(key: key);
 
   @override
@@ -38,10 +38,10 @@ class SpeedWidget extends StatelessWidget {
                   child: Slider(
                       min: 15,
                       max: 255,
-                      value: temp,
+                      value: speed,
                       activeColor: Colors.white,
                       inactiveColor: Colors.white30,
-                      onChanged: changeTemp),
+                      onChanged: changeSpeed),
                 ),
                 const Text(
                   'High',

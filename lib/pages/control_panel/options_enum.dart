@@ -1,1 +1,1 @@
-enum Options { timer, cooling, heat, dry }
+enum Options { timer, cooling, heat, manual, none }

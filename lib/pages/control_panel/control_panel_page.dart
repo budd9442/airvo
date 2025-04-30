@@ -33,6 +33,7 @@ class _ControlPanelPageState extends State<ControlPanelPage>
   int speed = 1;
   double temp = 22.85;
   double progressVal = 0.49;
+  double fanSpeed = 22;
   double temperature = 26;
   BluetoothConnection? _connection;
   bool _isConnecting = false;
@@ -109,6 +110,12 @@ class _ControlPanelPageState extends State<ControlPanelPage>
           setState(() {
             temperature = tValue;
             progressVal = mapTempToProgress(temp);
+            if(option != Options.manual){
+              fanSpeed = mapTemperatureToFanSpeed(temperature);
+              sendDataToDevice("slider : $fanSpeed");
+            }
+
+
 
           });
 
@@ -127,6 +134,19 @@ class _ControlPanelPageState extends State<ControlPanelPage>
       });
     }
   }
+
+  double mapTemperatureToFanSpeed(double temp) {
+    double minTemp = 16.0;
+    double maxTemp = 30.0;
+    double minFanSpeed = 60; // or whatever your minimum fan speed should be
+    double maxFanSpeed = 255; // or whatever your maximum fan speed should be
+
+    if (temp <= minTemp) return minFanSpeed;
+    if (temp >= maxTemp) return maxFanSpeed;
+
+    return minFanSpeed + (temp - minTemp) * (maxFanSpeed - minFanSpeed) / (maxTemp - minTemp);
+  }
+
 
   double mapTempToProgress(double temp) {
     double minTemp = 22.0;
@@ -310,10 +330,14 @@ class _ControlPanelPageState extends State<ControlPanelPage>
           size: 35,
         ),
         OptionWidget(
-          icon: 'assets/svg/drop.svg',
-          isSelected: option == Options.dry,
+          icon: 'assets/svg/air.svg',
+          isSelected: option == Options.manual,
           onTap: () => setState(() {
-            option = Options.dry;
+            if(option == Options.manual) {
+              option = Options.none;
+            }else{
+              option = Options.manual;
+            }
           }),
           size: 28,
         ),
@@ -372,10 +396,11 @@ class _ControlPanelPageState extends State<ControlPanelPage>
           height: 15,
         ),
         SpeedWidget(
-            temp: temp,
-            changeTemp: (val) => setState(() {
-                  temp = val;
-                  sendDataToDevice("slider : $temp");
+            speed: fanSpeed,
+            changeSpeed: (val) => setState(() {
+              option = Options.manual;
+              fanSpeed = val;
+                  sendDataToDevice("slider : $val");
                  // progressVal = normalize(val, kMinDegree, kMaxDegree);
                 })),
         const SizedBox(
@@ -383,5 +408,5 @@ class _ControlPanelPageState extends State<ControlPanelPage>
         ),
       ],
     );
-  }
+  }/////////////////////////////////////////////////////////////
 }
